@@ -57,14 +57,14 @@ implementation
 
 { TForm1 }
 var pasPower:integer;
-  butfors: string;
+  butfors: string; //орієнтовний час злому пароля, методом підбору, без osint бібліотек, неточна інформація
 procedure TForm1.TrackBar1Change(Sender: TObject);
 begin
   LengPass.Caption:=inttostr(trackBar1.Position);
   pasPower:=trackBar1.Position;
   butfCreate(pasPower);
     Label5.Caption:=butfors;
-     case pasPower of
+     case pasPower of  //картинка візуалізації потужності пароля
   4: begin  Label2.Caption:='Дуже ненадійний'; ImageList1.GetBitmap(0, Image2.Picture.Bitmap);   end;
   5:  begin Label2.Caption:='Слабкий';  ImageList1.GetBitmap(1, Image2.Picture.Bitmap);    end;
   8: begin Label2.Caption:='Слабкий';  ImageList1.GetBitmap(1, Image2.Picture.Bitmap);   end;
@@ -124,7 +124,7 @@ begin
 end;
 
 //-----------------------------------------------------------------------------------------------
-function isThere(a:array of Integer; n : Integer; x : Integer) : Boolean;
+function isThere(a:array of Integer; n : Integer; x : Integer) : Boolean; //процедура для створення рандомних і неповторюваних чисел
 var
   i : Integer;
   b : Boolean;
@@ -149,7 +149,7 @@ begin
   if CheckA_Z0_9.Checked=true  and   CheckSimb.Checked=true   then begin a:=1;  b:=80; end;
   if CheckA_Z0_9.Checked=false  and   CheckSimb.Checked=true   then begin b:=80;  a:=62; end ;
 
-  n:=Form1.TrackBar1.Position ;
+  n:=Form1.TrackBar1.Position ; //довжина пароля
   if (( a<b )and(n<=(b-a)+1)) then begin
     SetLength(arr, n+1);
     Randomize;
@@ -157,7 +157,7 @@ begin
      bool:=true;
      while (bool = true) do begin
       temp := Random(b-a+1) + a;
-      bool := isThere(arr, i, temp);
+      bool := isThere(arr, i, temp); //перевірка чи вже була цифра раніше
 
       if (bool = False) then
       begin
@@ -252,7 +252,6 @@ begin
   end else ShowMessage('Error! Одна з умов не виконується!');
 end;
 
-
 procedure TForm1.butfCreate(passLength:integer);
 var qall, alff:integer;
    ope, loctt,akk,agk,akc,alo,adis:double;
@@ -260,22 +259,19 @@ var qall, alff:integer;
 begin
   if CheckA_Z0_9.Checked=true  and   CheckSimb.Checked=true   then begin      // букви, цифри  і спецзнаки
     qall:= passLength*4;
-    alff:=80;
+    alff:=80; // кількість унікальних букв і цифр  зі спецзнаками
      end;
  if CheckA_Z0_9.Checked=true  and   CheckSimb.Checked=false   then begin             //просто букви і цифри
     qall:= passLength*3;
-    alff:=62;
+    alff:=62;   // кількість унікальних букв без спецзнаків
     end;
-    ope:=exp(passLength*ln(alff));
+    ope:=exp(passLength*ln(alff)); // (кількість перестановок=довжина алфавіту), (варіанти=довжина пароля)   довжина пароля^алфавіт
     opers:=FloatToStr(ope);
-    loctt:=ope/3520000000;
-
+    loctt:=ope/3520000000;  //0.352 tFlops --4 core AMD Phenom 9500  ---------------дані взяті з вікіпедії
 
      if  (loctt<=60)  then  begin
      loc1:=FloatToStr(loctt);
      dis1:=FloatToStr(loctt*957);
-
-
      tlo1:='секунд'
     end ;
       if  (loctt>60) and (loctt<=3600) then  begin
@@ -297,12 +293,12 @@ begin
      alo:=loctt/31536000;
    loc1:=FloatToStrf(alo,ffFixed,0,3);
    adis:=(loctt/31536000)*1021;
-   dis1:=FloatToStrf(adis,ffFixed,0,3);
-      akc:= (loctt/31536000)/10500;
+   dis1:=FloatToStrf(adis,ffFixed,0,3); 
+      akc:= (loctt/31536000)/10500;            //K Computer~ 11k * AMD Phenom 9500
      kcomp:=FloatToStrf(akc,ffFixed,0,3);
-     agk:= ((loctt/31536000)/10500)/315360000;
+     agk:= ((loctt/31536000)/10500)/315360000;  //GOOGLE quantum computer ~ performs the work in 1 second, the K Computer in a year. 315 360 000 секунд в році  
      gkvan:=FloatToStrf(agk,ffFixed,0,3);
-     akk:= ((((loctt/31536000)/10500)/315360000)/100000000000000);
+     akk:= ((((loctt/31536000)/10500)/315360000)/100000000000000); //China quantum computer ~ 100 trillion times faster than GOOGLE quantum computer
      kitkvant:=FloatToStrf(akk,ffFixed,0,3);
      tlo1:='років'
     end ;
