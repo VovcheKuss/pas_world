@@ -52,7 +52,7 @@ implementation
 
 { TForm1 }
 var pasPower:integer;
-  butfors: string;
+  butfors: string; // "brutforce"
 procedure TForm1.TrackBar1Change(Sender: TObject);
 begin
   LengPass.Caption:=inttostr(trackBar1.Position);
